@@ -1,0 +1,26 @@
+{
+    "name": "codebuglab/laravel-media-removable",
+    "description": "Automatically remove media like images, videos, and audios from storage folder once record with media deleted or updated from database",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mahmoud Belal",
+            "email": "mobelal999@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Codebuglab\\MediaRemovable\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CodeBugLab\\MediaRemovable\\MediaRemovableServiceProvider"
+            ]
+        }
+    }
+}

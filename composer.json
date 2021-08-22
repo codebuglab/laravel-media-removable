@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Codebuglab\\MediaRemovable\\": "src/"
+            "CodeBugLab\\MediaRemovable\\": "src/"
         }
     },
     "minimum-stability": "stable",
@@ -22,5 +22,13 @@
                 "CodeBugLab\\MediaRemovable\\MediaRemovableServiceProvider"
             ]
         }
-    }
+    },
+    "keywords": [
+        "laravel",
+        "laravel-trait",
+        "eloquent-models",
+        "laravel-storage",
+        "laravel-package",
+        "php"
+    ]
 }

@@ -1,10 +1,13 @@
 <?php
 
-namespace Codebuglab\MediaRemovable;
+namespace CodeBugLab\MediaRemovable;
+
+use CodeBugLab\MediaRemovable\Exceptions\MediaNotFoundException;
+use CodeBugLab\MediaRemovable\Exceptions\PathNotFoundException;
 
 trait MediaRemovable
 {
-    protected static function bootStorageRemovable()
+    protected static function bootMediaRemovable()
     {
         static::deleted(function ($model) {
             foreach (self::getFields() as $file) {
@@ -29,24 +32,26 @@ trait MediaRemovable
         }
     }
 
-    private static function getFields() {
+    private static function getFields()
+    {
         $fields = self::isExist(self::$mediaFields);
-       if ($fields == null) {
-           throw new MediaNotFoundException();
-       }
+        if ($fields == null) {
+            throw new MediaNotFoundException();
+        }
         return $fields;
     }
 
-    private static function getPath() {
-        $path = self::isExist(config('media_removable.path'));
-        $path = self::isExist(self::$mediaPath);
-       if ($path == null) {
-           throw new PathNotFoundException();
-       }
+    private static function getPath()
+    {
+        $path = isset(self::$mediaPath) ? self::isExist(self::$mediaPath) : self::isExist(config('media_removable.path'));
+        if ($path == null) {
+            throw new PathNotFoundException();
+        }
         return $path;
     }
 
-    private static function isExist($parameter) {
+    private static function isExist($parameter)
+    {
         if (isset($parameter)) {
             return $parameter;
         }

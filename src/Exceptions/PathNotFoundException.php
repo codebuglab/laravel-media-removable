@@ -1,6 +1,6 @@
 <?php
 
-namespace Codebuglab\MediaRemovable\Exceptions;
+namespace CodeBugLab\MediaRemovable\Exceptions;
 
 use Exception;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Codebuglab\MediaRemovable;
+namespace CodeBugLab\MediaRemovable;
 use Illuminate\Support\ServiceProvider;
 
 class MediaRemovableServiceProvider extends ServiceProvider{

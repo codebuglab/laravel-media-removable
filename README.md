@@ -110,11 +110,12 @@ class MyModel extends Eloquent
 ```php
 return [
     'path' => 'storage/app/public/',
+
     'fields' => ['image']
 ];
 ```
 - The above code expect field `image` in all models used `MediaRemovable` trait, We don't think it's a practical way but we keep it if someone need it.
-- If you have move details than that you can use `details` instead.
+- If you have more details than that you can use `details` instead.
 ```php
 return [
     'details' => [

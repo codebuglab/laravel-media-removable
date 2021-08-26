@@ -7,26 +7,52 @@ use CodeBugLab\MediaRemovable\Exceptions\PathNotFoundException;
 
 trait MediaRemovable
 {
+
+    public static $mediaDetailsFields = NULL;
+
+    public static $mediaDetailsPaths = NULL;
+
     protected static function bootMediaRemovable()
     {
+        if (isset(self::$mediaDetails)) {
+            self::setMediaDetailsFieldsAndPaths(self::$mediaDetails);
+        }
+
+        if (config('media-removable.details') !== null) {
+            self::setMediaDetailsFieldsAndPaths(config('media-removable.details.' . self::getTableName()));
+        }
+
         static::deleted(function ($model) {
-            foreach (self::getFields() as $file) {
-                self::removeFile($model->{$file});
+            foreach (self::getFields() as $fileKey => $file) {
+                if (is_array(self::getPath())) {
+                    self::removeFile(self::getPath()[$fileKey] . $model->{$file});
+                } else {
+                    self::removeFile(self::getPath() . $model->{$file});
+                }
             }
         });
 
         static::updating(function ($model) {
-            foreach (self::getFields() as $file) {
+            foreach (self::getFields() as $fileKey => $file) {
                 if ($model->getOriginal($file) !== $model->{$file}) {
-                    self::removeFile($model->getOriginal($file));
+                    if (is_array(self::getPath())) {
+                        self::removeFile(self::getPath()[$fileKey] . $model->getOriginal($file));
+                    } else {
+                        self::removeFile(self::getPath() . $model->getOriginal($file));
+                    }
                 }
             }
         });
     }
 
+    private static function getTableName()
+    {
+        return with(new static)->getTable();
+    }
+
     private static function removeFile($fileName)
     {
-        $filePath = base_path(self::getPath() . $fileName);
+        $filePath = base_path($fileName);
         if (file_exists($filePath)) {
             unlink($filePath);
         }
@@ -34,27 +60,35 @@ trait MediaRemovable
 
     private static function getFields()
     {
-        $fields = self::isExist(self::$mediaFields);
-        if ($fields == null) {
-            throw new MediaNotFoundException();
+        if (isset(self::$mediaDetailsFields)) {
+            return self::$mediaDetailsFields;
+        } elseif (isset(self::$mediaFields)) {
+            return self::$mediaFields;
+        } elseif (config('media-removable.fields') != null) {
+            return config('media-removable.fields');
         }
-        return $fields;
+        throw new MediaNotFoundException();
     }
 
     private static function getPath()
     {
-        $path = isset(self::$mediaPath) ? self::isExist(self::$mediaPath) : self::isExist(config('media_removable.path'));
-        if ($path == null) {
-            throw new PathNotFoundException();
+        if (isset(self::$mediaDetailsPaths)) {
+            return self::$mediaDetailsPaths;
+        } elseif (isset(self::$mediaPath)) {
+            return self::$mediaPath;
+        } elseif (config('media-removable.path') != null) {
+            return config('media-removable.path');
         }
-        return $path;
+        throw new PathNotFoundException();
     }
 
-    private static function isExist($parameter)
+    private static function setMediaDetailsFieldsAndPaths($data)
     {
-        if (isset($parameter)) {
-            return $parameter;
+        if (isset($data)) {
+            foreach ($data as $detail) {
+                self::$mediaDetailsFields[] = $detail['field'];
+                self::$mediaDetailsPaths[] = $detail['path'];
+            }
         }
-        return null;
     }
 }

@@ -14,14 +14,32 @@
             "CodeBugLab\\MediaRemovable\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "CodeBugLab\\MediaRemovable\\Tests\\": "tests/"
+        }
+    },
     "minimum-stability": "stable",
-    "require": {},
+    "require": {
+        "php": ">=7.0",
+        "illuminate/support": ">=6.0.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.5"
+    },
     "extra": {
         "laravel": {
             "providers": [
                 "CodeBugLab\\MediaRemovable\\MediaRemovableServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit --colors --testdox",
+        "post-autoload-dump": [
+            "@php ./vendor/bin/testbench package:discover --ansi"
+        ]
     },
     "keywords": [
         "laravel",

@@ -7,12 +7,12 @@ class MediaRemovableServiceProvider extends ServiceProvider{
 
     public function boot(){
         $this->mergeConfigFrom(
-            __DIR__ . '/config/media_removable.php',
-            'media_removable'
+            __DIR__ . '/config/media-removable.php',
+            'media-removable'
         );
 
         $this->publishes([
-            __DIR__ . '/config/media_removable.php' => config_path('media_removable.php')
+            __DIR__ . '/config/media-removable.php' => config_path('media-removable.php')
         ]);
     }
 

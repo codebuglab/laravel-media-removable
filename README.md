@@ -36,6 +36,7 @@ You have to publish config file with this artisan command:
 php artisan vendor:publish --provider="CodeBugLab\MediaRemovable\MediaRemovableServiceProvider"
 ```
 - File `media-removable.php` will be publish in `config` folder after that.
+- run `php artisan config:clear` to update application with published file.
 
 
 ## Instructions

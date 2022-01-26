@@ -37,7 +37,7 @@ abstract class TestCase extends BaseTestCase
     {
         $this->app['db']->connection()->getSchemaBuilder()->create('dummies', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('image');
+            $table->string('image')->nullable();
         });
 
         $this->dummyData();
@@ -45,6 +45,7 @@ abstract class TestCase extends BaseTestCase
         $this->dummyWithExceptionData();
         $this->dummyWithMediaDetailsData();
         $this->dummyWithMediaDetailsInConfigData();
+        $this->dummyWithNullableImageField();
     }
 
     private function dummyData()
@@ -100,5 +101,10 @@ abstract class TestCase extends BaseTestCase
                 "storage/app/public/dummy_with_media_details_in_config.jpg"
             )
         );
+    }
+
+    private function dummyWithNullableImageField()
+    {
+        DummyWithNullableImageField::create(['image' => NULL]);
     }
 }

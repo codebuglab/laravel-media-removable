@@ -24,6 +24,10 @@ trait MediaRemovable
 
         static::deleted(function ($model) {
             foreach (self::getFields() as $fileKey => $file) {
+                if($model->getOriginal($file) == null) {
+                    continue;
+                }
+
                 if (is_array(self::getPath())) {
                     self::removeFile(self::getPath()[$fileKey] . $model->{$file});
                 } else {
@@ -34,6 +38,10 @@ trait MediaRemovable
 
         static::updating(function ($model) {
             foreach (self::getFields() as $fileKey => $file) {
+                if($model->getOriginal($file) == null) {
+                    continue;
+                }
+
                 if ($model->getOriginal($file) !== $model->{$file}) {
                     if (is_array(self::getPath())) {
                         self::removeFile(self::getPath()[$fileKey] . $model->getOriginal($file));
